@@ -6,13 +6,13 @@
 #define OPENGLTEST_TRIANGLE_H
 
 #include <GL/glew.h>
-#include "Actor.h"
 
-class Triangle : public Actor {
+class Triangle {
 
 private:
     GLuint vao;
-    GLint kek = 0;
+    GLuint vbo;
+    GLint valShaderAttrPointer;
 
 public:
     Triangle() : Triangle(0,0,0,0,0,0) {}

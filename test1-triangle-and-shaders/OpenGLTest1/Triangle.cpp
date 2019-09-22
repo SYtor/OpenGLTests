@@ -10,7 +10,6 @@ std::random_device randomDevice;
 std::mt19937 mt(randomDevice());
 std::uniform_real_distribution<float > distribution(0.0, 0.2);
 
-
 Triangle::Triangle(float x1, float y1, float x2, float y2, float x3, float y3) {
 
     float vertices[] = {
@@ -28,7 +27,6 @@ Triangle::Triangle(float x1, float y1, float x2, float y2, float x3, float y3) {
 
     //Coordinates
 
-    GLuint vbo;
     glGenBuffers(1, &vbo);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), &vertices, GL_DYNAMIC_DRAW);
@@ -47,11 +45,11 @@ Triangle::Triangle(float x1, float y1, float x2, float y2, float x3, float y3) {
     glUseProgram(shaderProgram);
 
     GLint posAttr = glGetAttribLocation(shaderProgram, "position");
-    glVertexAttribPointer(posAttr, 2, GL_FLOAT, GL_FALSE, 0, 0);
+    glVertexAttribPointer(posAttr, 2, GL_FLOAT, GL_FALSE, 0, nullptr);
     glEnableVertexAttribArray(posAttr);
 
-    kek = glGetUniformLocation(shaderProgram, "val");
-    glUniform1f(kek, distribution(mt));
+    valShaderAttrPointer = glGetUniformLocation(shaderProgram, "val");
+    glUniform1f(valShaderAttrPointer, distribution(mt));
 
 }
 
@@ -59,11 +57,11 @@ Triangle::Triangle(float x1, float y1, float x2, float y2, float x3, float y3) {
 void Triangle::draw() {
 
     glBindVertexArray(vao);
-    glUniform1f(kek, distribution(mt));
+    glUniform1f(valShaderAttrPointer, distribution(mt));
     glDrawArrays(GL_TRIANGLES, 0, 3);
 
 }
 
 Triangle::~Triangle() {
-
+    glDeleteBuffers(1, &vbo);
 }
